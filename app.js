@@ -1,3 +1,27 @@
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+
+app.get('/', function(req, res){	
+  res.sendFile(__dirname + '/wave.html');
+
+});
+
+app.get('/wave.css', function(req, res){	
+  res.sendFile(__dirname + '/wave.css');
+
+});
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
+
+
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});
+
 
 var five = require("johnny-five"),
   board, button;
@@ -27,6 +51,7 @@ board.on("ready", function() {
   // "down" the button is pressed
   button.on("down", function() {
     console.log("down");
+    io.emit('test',10);
   });
 
   // "hold" the button is pressed for specified time.
