@@ -38,7 +38,7 @@ board.on("ready", function() {
   // Create a new `button` hardware instance.
   // This example allows the button module to
   // create a completely default instance
-  button = new five.Button(2);// arduino pin
+  button = new five.Button(4);// arduino pin
 
   // Inject the `button` hardware into
   // the Repl instance's context;
@@ -52,6 +52,7 @@ board.on("ready", function() {
   // "down" the button is pressed
   button.on("down", function() {
     console.log("down");
+    io.emit('test',300);//sending message to client side-speaking 
     
   });
 
@@ -65,6 +66,6 @@ board.on("ready", function() {
   // "up" the button is released
   button.on("up", function() {
     console.log("up");
-    io.emit('test',10);//sending message to client side-speaking 
+    
   });
 });
