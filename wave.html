@@ -13,10 +13,15 @@
 
 
 <script>
+var buttonValue = function(){
 
-var socket = io();
+}
+
+var socket = io(); //makes the connection to server side line 18 
+//client side listening for a message from the server line 69. speaking
 socket.on('test', function(msg){
-    console.log("10 value connected",msg);
+   buttonValue=msg;
+   console.log(buttonValue);
   });
 
 var canvas = document.getElementById( "canvas" );
@@ -37,9 +42,9 @@ window.requestAnimtionFrame =
 
 var options = {
     color: "#777",
-    waveAmplitude: 30,
+    waveAmplitude: 10,
     waveRadius: 100,
-    waveElasticity:1,
+    waveElasticity:.95,
     waveStrength: 0.011,
     waveMouse: 10,
     waveMax: 100,
@@ -162,7 +167,7 @@ var Water = function( context ) {
     function createWaves( height ) {
 
         waves = [];
-        var distance = 50;
+        var distance = 5;
 
         times( height / distance, function( index ) {
             waves.push( new Wave( 0, index * distance + 10, context, rand( 0.18, 0.22 ) * index ) );

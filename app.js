@@ -1,32 +1,33 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var app = require('express')(); //i need express library
+var http = require('http').Server(app); //making a http server from express app
+var io = require('socket.io')(http); 
 
-
+//request a file at the top level
 app.get('/', function(req, res){	
   res.sendFile(__dirname + '/wave.html');
 
 });
 
+//making html connection to css
 app.get('/wave.css', function(req, res){	
   res.sendFile(__dirname + '/wave.css');
 
 });
 
+//listening for the connection event with the client line 20
 io.on('connection', function(socket){
   console.log('a user connected');
 });
 
-
+//
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });
 
+//johnny-five to board arduino
 
 var five = require("johnny-five"),
   board, button;
-
-
 
 board = new five.Board();
 console.log("app is ready")
@@ -37,7 +38,7 @@ board.on("ready", function() {
   // Create a new `button` hardware instance.
   // This example allows the button module to
   // create a completely default instance
-  button = new five.Button(4);
+  button = new five.Button(2);// arduino pin
 
   // Inject the `button` hardware into
   // the Repl instance's context;
@@ -51,7 +52,7 @@ board.on("ready", function() {
   // "down" the button is pressed
   button.on("down", function() {
     console.log("down");
-    io.emit('test',10);
+    
   });
 
   // "hold" the button is pressed for specified time.
@@ -64,5 +65,6 @@ board.on("ready", function() {
   // "up" the button is released
   button.on("up", function() {
     console.log("up");
+    io.emit('test',10);//sending message to client side-speaking 
   });
 });
