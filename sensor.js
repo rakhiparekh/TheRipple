@@ -12,7 +12,7 @@ app.get('/', function(req, res){
 app.get('/wave.css', function(req, res){	
   res.sendFile(__dirname + '/wave.css');
 
-});
+}); 
 
 //listening for the connection event with the client line 20
 io.on('connection', function(socket){
