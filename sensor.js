@@ -24,48 +24,55 @@ http.listen(3000, function(){
   console.log('listening on *:3000');
 });
 
-//johnny-five to board arduino
+
+// johnny-five to arduino
 
 var five = require("johnny-five"),
-  board, button;
+  board, sensor;
 
 board = new five.Board();
-console.log("app is ready")
 
 board.on("ready", function() {
-	console.log("board ready");
 
-  // Create a new `button` hardware instance.
-  // This example allows the button module to
-  // create a completely default instance
-  button = new five.Button(2);// arduino pin
+  // Create a new `sensor` hardware instance.
+  sensor = new five.Sensor({
+    pin: "A0",
+    freq: 250
+  });
 
-  // Inject the `button` hardware into
+  // Inject the `sensor` hardware into
   // the Repl instance's context;
   // allows direct command line access
   board.repl.inject({
-    button: button
+    sensor: sensor
   });
 
-  // Button Event API
+  // Properties
 
-  // "down" the button is pressed
-  button.on("down", function() {
-    console.log("down");
-    io.emit('test',300);//sending message to client side-speaking 
-    
+  // sensor.scaled
+  //
+  // Current value of a sensor, scaled to a value
+  // between the lower and upper bound set by calling
+  // scale( low, high ).
+  //
+  // Defaults to value between 0-255
+  //
+
+
+  // Sensor Event API
+
+  // "data"
+  //
+  // Fires when the pin is read for a value
+  //
+  sensor.scale([0, 100]).on("data", function() {
+    console.log(this.value, this.raw);
   });
 
-  // "hold" the button is pressed for specified time.
-  //        defaults to 500ms (1/2 second)
-  //        set
-  button.on("hold", function() {
-    console.log("hold");
-  });
-
-  // "up" the button is released
-  button.on("up", function() {
-    console.log("up");
-    
-  });
+  // "change"
+  //
+  // Aliases: "bend", "force", "slide", "touch"
+  //
+  // Fires when value of sensor changes
+  //
 });

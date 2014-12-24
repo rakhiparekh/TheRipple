@@ -15,7 +15,7 @@ window.requestAnimtionFrame =
     };
 
 var options = {
-    color: "#777",
+    color: "#ff0000",
     waveAmplitude: 30,
     waveRadius: 100,
     waveElasticity: 0.95,
