@@ -1,5 +1,3 @@
-
-
 /*
 THIS PROGRAM WORKS WITH PulseSensorAmped_Arduino-xx ARDUINO CODE
 THE PULSE DATA WINDOW IS SCALEABLE WITH SCROLLBAR AT BOTTOM OF SCREEN
@@ -9,13 +7,10 @@ MADE BY JOEL MURPHY AUGUST, 2012
 
 
 import processing.serial.*;
-Serial myPort;   
-String val;     // Data received from the serial port
-
 PFont font;
 Scrollbar scaleBar;
 
-  
+Serial port;     
 
 int Sensor;      // HOLDS PULSE SENSOR DATA FROM ARDUINO
 int IBI;         // HOLDS TIME BETWEN HEARTBEATS FROM ARDUINO
@@ -59,16 +54,11 @@ void setup() {
  }
    
 // GO FIND THE ARDUINO
- 
+  println(Serial.list());    // print a list of available serial ports
   // choose the number between the [] that is connected to the Arduino
-// I know that the first port in the serial list on my mac
-// is Serial.list()[0].
-// On Windows machines, this generally opens COM1.
-// Open whatever port is the one you're using.
-String portName = Serial.list()[0]; //change the 0 to a 1 or 2 etc. to match your port
-myPort = new Serial(this, portName, 115200); 
- println(Serial.list());    // print a list of available serial ports
-
+  port = new Serial(this, Serial.list()[0], 115200);  // make sure Arduino is talking serial at this baud rate
+  port.clear();            // flush buffer
+  port.bufferUntil('\n');  // set buffer full flag on receipt of carriage return
 }
   
 void draw() {
@@ -78,15 +68,6 @@ void draw() {
   fill(eggshell);  // color for the window background
   rect(255,height/2,PulseWindowWidth,PulseWindowHeight);
   rect(600,385,BPMWindowWidth,BPMWindowHeight);
-  
-
-  if ( myPort.available() > 0) 
-  {  // If data is available,
-  val = myPort.readStringUntil('\n');         // read it and store it in val
-  } 
-println(val); //print it out in the console
-
-
   
 // DRAW THE PULSE WAVEFORM
   // prepare pulse data points    
