@@ -37,7 +37,7 @@ board.on("ready", function() {
   // Create a new `sensor` hardware instance.
   sensor = new five.Sensor({
     pin: "A0",
-    freq: 1000,
+    freq: 250,
   });
 
   // Inject the `sensor` hardware into
@@ -67,6 +67,7 @@ board.on("ready", function() {
   //
   sensor.on("data", function() {
     console.log(this.value, this.raw);
+    io.emit('pulse',this.value);//sending message to client side-speaking 
   });
 
   // "change"
