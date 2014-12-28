@@ -1,4 +1,7 @@
 
+import cc.arduino.*;
+
+
 
 /*
 THIS PROGRAM WORKS WITH PulseSensorAmped_Arduino-xx ARDUINO CODE
@@ -65,9 +68,9 @@ void setup() {
 // is Serial.list()[0].
 // On Windows machines, this generally opens COM1.
 // Open whatever port is the one you're using.
-String portName = Serial.list()[0]; //change the 0 to a 1 or 2 etc. to match your port
+String portName = Serial.list()[2]; //change the 0 to a 1 or 2 etc. to match your port
 myPort = new Serial(this, portName, 115200); 
- println(Serial.list());    // print a list of available serial ports
+ println(Serial.list()); // print a list of available serial ports
 
 }
   
