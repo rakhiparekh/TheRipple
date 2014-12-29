@@ -138,10 +138,100 @@ var options = {
     waveRiseSpeed: 15,
 };
 
+//global variables for readings from the two heart sensors
+
+var heartBeatOne // from analog pin A0
+var heartBeatTwo // from analog pin A1
+
 //client side listening for a message from the server line 69. speaking
 
 
-function heartRate() {
+//from sensor at analog pin A0
+var heartBeatOne=function heartRateOne(){
+//getting reading from io.emit in server.js on line 76
+     socket.on('beatOne', function (data) {
+            beatOne_data.push(data)
+            beatOne_data.shift();
+
+            // plot.setData([ parse_data() ]);
+        // plot.draw();
+
+            if (data < beatOne_data[totalPoints - 2] - .2) {
+                freq = Date.now() - lastPeak;
+                lastPeak = Date.now();
+
+                peakDiffs.push(freq);
+                peakDiffs.shift();
+
+                var peak_sum = 0;
+                for (var i = 0; i < peakDiffs.length; i++) {
+                    peak_sum += peakDiffs[i];
+                }
+                //node calculation of values frm the server refre to node pulse sensor tutorial
+                //https://github.com/neiltron/node-pulsesensor
+                heartRateOne = parseInt(60 / ((peak_sum / peakDiffs.length) / 1000), 10);
+
+                console.log('hr1='+heartRateOne);
+
+              //   var upDownOne = Math.random();//random number generator used to scale the differnce between heart beats 
+              //   if (upDownOne >= 0.5){
+              //       upDownOne=1;
+              //   }
+              //   else upDownOne=-1;
+
+              //   scaledHeartRateOne= 150+(heartRateOne*upDownOne);//scaling heart_rate variable
+              // // $('#heartrate').html(heart_rate);
+                
+
+            }
+        });
+
+}
+
+//getting reading from io.emit in server.js on line 81
+var heartBeatTwo=function heartRateTwo(){
+
+     socket.on('beatTwo', function (data) {
+            beatTwo_data.push(data)
+            beatTwo_data.shift();
+
+            // plot.setData([ parse_data() ]);
+        // plot.draw();
+
+            if (data < beatTwo_data[totalPoints - 2] - .2) {
+                freq = Date.now() - lastPeak;
+                lastPeak = Date.now();
+
+                peakDiffs.push(freq);
+                peakDiffs.shift();
+
+                var peak_sum = 0;
+                for (var i = 0; i < peakDiffs.length; i++) {
+                    peak_sum += peakDiffs[i];
+                }
+              
+                //node calculation of values frm the server refre to node pulse sensor tutorial
+                //https://github.com/neiltron/node-pulsesensor
+                heartRateTwo = parseInt(60 / ((peak_sum / peakDiffs.length) / 1000), 10);
+
+                console.log('hr2='+heartRateTwo);
+
+              //   var upDownTwo = Math.random();//random number generator
+              //   if (upDownTwo >= 0.5){
+              //       upDownTwo=1;
+              //   }
+              //   else upDownTwo=-1;
+
+              //   scaledHeartRateTwo= 150+(heartRateTwo*upDownTwo);//scaling heart_rate variable
+              // // $('#heartrate').html(heart_rate);
+            }
+        });
+
+}
+
+var heartBeatDiff = heartBeatOne-heartBeatTwo;
+
+function heartRateDiffScaled() {
 
     var exports = {
         x: 650,
@@ -154,28 +244,7 @@ function heartRate() {
                 exports.y = scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate;
             }, 100);
 
-            socket.on('pulse', function (data) {
-                pulse_data.push(data)
-                pulse_data.shift();
 
-                // plot.setData([ parse_data() ]);
-            // plot.draw();
-
-                if (data < pulse_data[totalPoints - 2] - .2) {
-                    freq = Date.now() - lastPeak;
-                    lastPeak = Date.now();
-
-                    peakDiffs.push(freq);
-                    peakDiffs.shift();
-
-                    var peak_sum = 0;
-                    for (var i = 0; i < peakDiffs.length; i++) {
-                        peak_sum += peakDiffs[i];
-                    }
-                  
-                    heart_rate = parseInt(60 / ((peak_sum / peakDiffs.length) / 1000), 10);
-
-                    console.log(heart_rate);
 
                     var upDown = Math.random();//random number generator
                     if (upDown >= 0.5){
@@ -183,17 +252,67 @@ function heartRate() {
                     }
                     else upDown=-1;
 
-                    scaledHeartRate= 150+(heart_rate*upDown);//scaling heart_rate variable
+                    scaledHeartRate= 150+(heartRateDiff*upDown);//scaling heart_rate variable
                   // $('#heartrate').html(heart_rate);
                     exports.y=scaledHeartRate;
 
                 }
-                 
-                
-                
-            });
-        }
-    };
+            };
+        };
+   
+
+//ORIGINAL FUNCTION WRITTEN WITH NOURA AND NEAL
+
+// function heartRate() {
+
+//     var exports = {
+//         x: 650,
+//         y: 0,
+//         bind: function( canvas ) {
+
+//             var scaledHeartRate =0;
+//             var myInterval= setInterval(function() {
+//                 var t = (new Date()).getTime() / 1000;
+//                 exports.y = scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate;
+//             }, 100);
+
+//             socket.on('pulse', function (data) {
+//                 pulse_data.push(data)
+//                 pulse_data.shift();
+
+//                 // plot.setData([ parse_data() ]);
+//             // plot.draw();
+
+//                 if (data < pulse_data[totalPoints - 2] - .2) {
+//                     freq = Date.now() - lastPeak;
+//                     lastPeak = Date.now();
+
+//                     peakDiffs.push(freq);
+//                     peakDiffs.shift();
+
+//                     var peak_sum = 0;
+//                     for (var i = 0; i < peakDiffs.length; i++) {
+//                         peak_sum += peakDiffs[i];
+//                     }
+                  
+//                     heart_rate = parseInt(60 / ((peak_sum / peakDiffs.length) / 1000), 10);
+
+//                     console.log(heart_rate);
+
+//                     var upDown = Math.random();//random number generator
+//                     if (upDown >= 0.5){
+//                         upDown=1;
+//                     }
+//                     else upDown=-1;
+
+//                     scaledHeartRate= 150+(heart_rate*upDown);//scaling heart_rate variable
+//                   // $('#heartrate').html(heart_rate);
+//                     exports.y=scaledHeartRate;
+
+//                 }
+//             });
+//         }
+//     };
 
     function onMouseMove( event ) {
         exports.x = event.pageX;
@@ -204,7 +323,7 @@ function heartRate() {
 
 };
 
-var Mouse = heartRate(); //calling mousePositionGetter
+var Mouse = scaledHeartRate(); //calling mousePositionGetter
 
 
 

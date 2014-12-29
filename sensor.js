@@ -34,13 +34,19 @@ board = new five.Board();
 
 board.on("ready", function() {
 
-  // Create a new `sensor` hardware instance.
+  // Create a new `sensor` hardware instance from analog pin A0.
   sensor = new five.Sensor({
     pin: "A0",
     freq: 250,
   });
 
-  
+ // Create a new `sensor` hardware instance from analog pin A1
+  sensor = new five.Sensor({
+    pin: "A1",
+    freq: 250,
+  });
+
+
 
   // Inject the `sensor` hardware into
   // the Repl instance's context;
@@ -69,7 +75,12 @@ board.on("ready", function() {
   //
   sensor.on("data", function() {
     console.log(this.value, this.raw);
-    io.emit('pulse',this.value);//sending message to client side-speaking 
+    io.emit('beatOne',this.value);//sending message to client side-speaking from sensor on analog input A0
+  });
+
+  sensor.on("data", function() {
+    console.log(this.value, this.raw);
+    io.emit('beatTwo',this.value);//sending message to client side-speaking from sensor on analog input A1
   });
 
   // "change"
