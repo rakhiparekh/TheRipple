@@ -148,6 +148,17 @@ var heartBeatTwo // from analog pin A1
 
 //from sensor at analog pin A0
 var heartBeatOne=function heartRateOne(){
+    var exports = {
+        x: 350,
+        y: 0,
+        bind: function( canvas ) {
+
+            var scaledHeartRate =0;
+            var myInterval= setInterval(function() {
+                var t = (new Date()).getTime() / 1000;
+                exports.y = scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate;
+            }, 100);
+
 //getting reading from io.emit in server.js on line 76
      socket.on('beatOne', function (data) {
             beatOne_data.push(data)
@@ -173,14 +184,14 @@ var heartBeatOne=function heartRateOne(){
 
                 console.log('hr1='+heartRateOne);
 
-              //   var upDownOne = Math.random();//random number generator used to scale the differnce between heart beats 
-              //   if (upDownOne >= 0.5){
-              //       upDownOne=1;
-              //   }
-              //   else upDownOne=-1;
+                var upDownOne = Math.random();//random number generator used to scale the differnce between heart beats 
+                if (upDownOne >= 0.5){
+                    upDownOne=1;
+                }
+                else upDownOne=-1;
 
-              //   scaledHeartRateOne= 150+(heartRateOne*upDownOne);//scaling heart_rate variable
-              // // $('#heartrate').html(heart_rate);
+                scaledHeartRateOne= 150+(heartRateOne*upDownOne);//scaling heart_rate variable
+              // $('#heartrate').html(heart_rate);
                 
 
             }
@@ -190,6 +201,17 @@ var heartBeatOne=function heartRateOne(){
 
 //getting reading from io.emit in server.js on line 81
 var heartBeatTwo=function heartRateTwo(){
+
+    var exports = {
+        x: 750,
+        y: 0,
+        bind: function( canvas ) {
+
+            var scaledHeartRate =0;
+            var myInterval= setInterval(function() {
+                var t = (new Date()).getTime() / 1000;
+                exports.y = scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate;
+            }, 100);
 
      socket.on('beatTwo', function (data) {
             beatTwo_data.push(data)
@@ -216,49 +238,49 @@ var heartBeatTwo=function heartRateTwo(){
 
                 console.log('hr2='+heartRateTwo);
 
-              //   var upDownTwo = Math.random();//random number generator
-              //   if (upDownTwo >= 0.5){
-              //       upDownTwo=1;
-              //   }
-              //   else upDownTwo=-1;
+                var upDownTwo = Math.random();//random number generator
+                if (upDownTwo >= 0.5){
+                    upDownTwo=1;
+                }
+                else upDownTwo=-1;
 
-              //   scaledHeartRateTwo= 150+(heartRateTwo*upDownTwo);//scaling heart_rate variable
+                scaledHeartRateTwo= 150+(heartRateTwo*upDownTwo);//scaling heart_rate variable
               // // $('#heartrate').html(heart_rate);
             }
         });
 
 }
 
-var heartBeatDiff = heartBeatOne-heartBeatTwo;
+// var heartBeatDiff = heartBeatOne-heartBeatTwo;
 
-function heartRateDiffScaled() {
+// function heartRateDiffScaled() {
 
-    var exports = {
-        x: 650,
-        y: 0,
-        bind: function( canvas ) {
+//     var exports = {
+//         x: 650,
+//         y: 0,
+//         bind: function( canvas ) {
 
-            var scaledHeartRate =0;
-            var myInterval= setInterval(function() {
-                var t = (new Date()).getTime() / 1000;
-                exports.y = scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate;
-            }, 100);
+//             var scaledHeartRate =0;
+//             var myInterval= setInterval(function() {
+//                 var t = (new Date()).getTime() / 1000;
+//                 exports.y = scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate;
+//             }, 100);
 
 
 
-                    var upDown = Math.random();//random number generator
-                    if (upDown >= 0.5){
-                        upDown=1;
-                    }
-                    else upDown=-1;
+//                     var upDown = Math.random();//random number generator
+//                     if (upDown >= 0.5){
+//                         upDown=1;
+//                     }
+//                     else upDown=-1;
 
-                    scaledHeartRate= 150+(heartRateDiff*upDown);//scaling heart_rate variable
-                  // $('#heartrate').html(heart_rate);
-                    exports.y=scaledHeartRate;
+//                     scaledHeartRate= 150+(heartRateDiff*upDown);//scaling heart_rate variable
+//                   // $('#heartrate').html(heart_rate);
+//                     exports.y=scaledHeartRate;
 
-                }
-            };
-        };
+//                 }
+//             };
+//         };
    
 
 //ORIGINAL FUNCTION WRITTEN WITH NOURA AND NEAL
@@ -323,7 +345,7 @@ function heartRateDiffScaled() {
 
 };
 
-var Mouse = scaledHeartRate(); //calling mousePositionGetter
+var Mouse = heartRateDiffScaled(); //calling mousePositionGetter
 
 
 
