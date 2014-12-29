@@ -141,68 +141,57 @@ var options = {
 
 
 
+
+
 //client side listening for a message from the server line 69. speaking
 
 
-// function heartRate() {
-
-//     var exports = {
-//         x: 200,
-//         y: 0,
-//         bind: function( canvas ) {
-
-
-//             socket.on('pulse', function (data) {
-//                 pulse_data.push(data)
-//                 pulse_data.shift();
-
-//                 // plot.setData([ parse_data() ]);
-//             // plot.draw();
-
-//                 if (data < pulse_data[totalPoints - 2] - .2) {
-//                     freq = Date.now() - lastPeak;
-//                     lastPeak = Date.now();
-
-//                     peakDiffs.push(freq);
-//                     peakDiffs.shift();
-
-//                     var peak_sum = 0;
-//                     for (var i = 0; i < peakDiffs.length; i++) {
-//                         peak_sum += peakDiffs[i];
-//                     }
-//                     heart_rate = parseInt(60 / ((peak_sum / peakDiffs.length) / 1000), 10);
-//                     console.log(heart_rate);
-//                   // $('#heartrate').html(heart_rate);
-//                 }
-//                 exports.y=(exports.y+heart_rate);
-//                 // console.log("updateButton");
-//             });
-//         }
-//     };
-
-    // function onMouseMove( event ) {
-    //     exports.x = event.pageX;
-    //     exports.y = event.pageY;
-    // }
-
-//     return exports;
-
-// };
-
-// var Mouse = heartRate(); //calling mousePositionGetter
-
-
-
-function mousePositionGetter() {
+function heartRate() {
 
     var exports = {
-        x: 0,
+        x: 650,
         y: 0,
         bind: function( canvas ) {
-            canvas.addEventListener( "mousemove", onMouseMove );
-        },
-        unbind: function( canvas ) {
-            canvas.removeEventListener( "mousemove", onMouseMove );
+
+
+            socket.on('pulse', function (data) {
+                pulse_data.push(data)
+                pulse_data.shift();
+
+                // plot.setData([ parse_data() ]);
+            // plot.draw();
+
+                if (data < pulse_data[totalPoints - 2] - .2) {
+                    freq = Date.now() - lastPeak;
+                    lastPeak = Date.now();
+
+                    peakDiffs.push(freq);
+                    peakDiffs.shift();
+
+                    var peak_sum = 0;
+                    for (var i = 0; i < peakDiffs.length; i++) {
+                        peak_sum += peakDiffs[i];
+                    }
+                  
+                    heart_rate = parseInt(60 / ((peak_sum / peakDiffs.length) / 1000), 10);
+
+                    console.log(heart_rate);
+
+                    var upDown = Math.random();//random number generator
+                    if (upDown >= 0.5){
+                        upDown=1;
+                    }
+                    else upDown=-1;
+
+                    var scaledHeartRate= 150+(heart_rate*upDown);//scaling heart_rate variable
+                  // $('#heartrate').html(heart_rate);
+                    exports.y=scaledHeartRate;
+
+                    
+                }
+                
+                
+            });
         }
     };
 
@@ -215,7 +204,33 @@ function mousePositionGetter() {
 
 };
 
-var Mouse = mousePositionGetter(); //calling mousePositionGetter
+var Mouse = heartRate(); //calling mousePositionGetter
+
+
+
+// function mousePositionGetter() {
+
+//     var exports = {
+//         x: 0,
+//         y: 0,
+//         bind: function( canvas ) {
+//             canvas.addEventListener( "mousemove", onMouseMove );
+//         },
+//         unbind: function( canvas ) {
+//             canvas.removeEventListener( "mousemove", onMouseMove );
+//         }
+//     };
+
+//     function onMouseMove( event ) {
+//         exports.x = event.pageX;
+//         exports.y = event.pageY;
+//     }
+
+//     return exports;
+
+// };
+
+// var Mouse = mousePositionGetter(); //calling mousePositionGetter
 
 var Stage = {
     width: 1,
