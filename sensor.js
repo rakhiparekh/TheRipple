@@ -40,6 +40,8 @@ board.on("ready", function() {
     freq: 250,
   });
 
+  
+
   // Inject the `sensor` hardware into
   // the Repl instance's context;
   // allows direct command line access

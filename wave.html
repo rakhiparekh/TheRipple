@@ -130,18 +130,13 @@ var options = {
     color: "#777",
     waveAmplitude: 10,
     waveRadius: 100,
-    waveElasticity:.95,
+    waveElasticity:1,
     waveStrength: 0.011,
     waveMouse: 10,
     waveMax: 100,
     waveComeUp: function() {},
     waveRiseSpeed: 15,
 };
-
-
-
-
-
 
 //client side listening for a message from the server line 69. speaking
 
@@ -153,6 +148,11 @@ function heartRate() {
         y: 0,
         bind: function( canvas ) {
 
+            var scaledHeartRate =0;
+            var myInterval= setInterval(function() {
+                var t = (new Date()).getTime() / 1000;
+                exports.y = scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate;
+            }, 100);
 
             socket.on('pulse', function (data) {
                 pulse_data.push(data)
@@ -183,12 +183,12 @@ function heartRate() {
                     }
                     else upDown=-1;
 
-                    var scaledHeartRate= 150+(heart_rate*upDown);//scaling heart_rate variable
+                    scaledHeartRate= 150+(heart_rate*upDown);//scaling heart_rate variable
                   // $('#heartrate').html(heart_rate);
                     exports.y=scaledHeartRate;
 
-                    
                 }
+                 
                 
                 
             });
