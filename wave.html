@@ -151,17 +151,18 @@ function heartRate(myEvent, myX) {
                   
                     heart_rate = parseInt(60 / ((peak_sum / peakDiffs.length) / 1000), 10);
 
-                    console.log(heart_rate);
+                    console.log(myEvent,data);
 
-                    var upDown = Math.random();//random number generator
-                    if (upDown >= 0.5){
-                        upDown=1;
-                    }
-                    else upDown=-1;
+                    // var upDown = Math.random();//random number generator
+                    // if (upDown >= 0.5){
+                    //     upDown=1;
+                    // }
+                    // else upDown=-1;
 
-                    scaledHeartRate= 150+(heart_rate*upDown);//scaling heart_rate variable
+                    scaledHeartRate= 0.5*(heart_rate);//scaling heart_rate variable
                   // $('#heartrate').html(heart_rate);
-                    exports.y=scaledHeartRate;
+                    
+                    console.log(scaledHeartRate);
 
                 }
     
@@ -176,7 +177,7 @@ function heartRate(myEvent, myX) {
 var MouseOne = heartRate('beatOne',350); //calling mousePositionGetter
 var MouseTwo = heartRate('beatTwo',850); //calling mousePositionGetter
 
-var Mouse=MouseOne;
+
 
 // function mousePositionGetter() {
 
@@ -312,8 +313,10 @@ var Wave = function( originalX, originalY, context, offset ) {
     var anchors;
     var width;
     var height;
-    var mouseDirection;
-    var oldMouse;
+    var mouseDirection1;
+    var mouseDirection2;
+    var oldMouse1;
+    var oldMouse2;
     var x;
     var y;
 
@@ -322,7 +325,8 @@ var Wave = function( originalX, originalY, context, offset ) {
         y = targetY = originalY;
 
         anchors = [];
-        mouseDirection = { x: 0, y: 0 };
+        mouseDirection1 = { x: 0, y: 0 };
+        mouseDirection2 = { x: 0, y: 0 };
 
         var anchor;
         var current = 0;
@@ -384,27 +388,55 @@ var Wave = function( originalX, originalY, context, offset ) {
         y = height + 300 + originalY * 0.4;
     };
 
+
     function update() {
-        targetY = Math.min( y, Mouse.y + originalY );
-        y += ( targetY - y ) / options.waveRiseSpeed;
 
         updateMouse();
 
+/////////////////////MOUSE ONE/////////////////////////////////////////////////
+        targetY = Math.min( y, MouseOne.y + originalY );
+        y += ( targetY - y ) / options.waveRiseSpeed;
+
+
+
         anchors.forEach( function( anchor ) {
-            anchor.update( mouseDirection, y );
+            anchor.update( mouseDirection1, y );
+        } );
+
+/////////////////////MOUSE TWO/////////////////////////////////////////////////
+         targetY = Math.min( y, MouseTwo.y + originalY );
+        y += ( targetY - y ) / options.waveRiseSpeed;
+
+       
+
+        anchors.forEach( function( anchor ) {
+            anchor.update( mouseDirection2, y );
         } );
     }
 
     function updateMouse() {
-        if ( ! oldMouse ) {
-            oldMouse = { x: Mouse.x, y: Mouse.y };
+
+/////////////////////MOUSE ONE/////////////////////////////////////////////////
+        if ( ! oldMouse1 ) {
+            oldMouse1 = { x: MouseOne.x, y: MouseOne.y };
             return;
         }
 
-        mouseDirection.x = Mouse.x - oldMouse.x;
-        mouseDirection.y = Mouse.y - oldMouse.y;
+        mouseDirection1.x = MouseOne.x - oldMouse1.x;
+        mouseDirection1.y = MouseOne.y - oldMouse1.y;
 
-        oldMouse = { x: Mouse.x, y: Mouse.y };
+        oldMouse1 = { x: MouseOne.x, y: MouseOne.y };
+
+/////////////////////MOUSE TWO/////////////////////////////////////////////////
+        if ( ! oldMouse2 ) {
+            oldMouse2 = { x: MouseTwo.x, y: MouseTwo.y };
+            return;
+        }
+
+        mouseDirection2.x = MouseTwo.x - oldMouse2.x;
+        mouseDirection2.y = MouseTwo.y - oldMouse2.y;
+
+        oldMouse2 = { x: MouseTwo.x, y: MouseTwo.y };
     }
 
     init.call( this );
@@ -455,10 +487,23 @@ var Anchor = function( x, y, start, target, delta ) {
 
 
     function getMultiplier() {
-        var lang = distance( Mouse, origin );
+
+        var lang1 = distance( MouseOne, origin );
+        var lang2 = distance( MouseTwo, origin );
+        var lang=(lang1+lang2)/2;
+
         var radius = options.waveRadius;
 
-        return  lang < radius ? 1 - lang / radius : 0;
+        // return  lang < radius ? 1 - lang / radius : 0; short hand way of writing an if and else statement look below
+
+        var result;
+        if(lang<radius){
+            result=1-lang/radius;
+        }
+        else{
+            result=0;
+        }
+        return result;
     }
 
     init.call( this );
@@ -564,7 +609,8 @@ var Canvas = function( canvas, size ) {
         context = canvas.getContext( "2d" );
 
         setTimeout( function() {
-            Mouse.bind( canvas );
+            MouseOne.bind( canvas );
+             MouseTwo.bind( canvas );
         }, 1000 );
 
         Stage.set( size );
