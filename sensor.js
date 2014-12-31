@@ -35,13 +35,13 @@ board = new five.Board();
 board.on("ready", function() {
 
   // Create a new `sensor` hardware instance from analog pin A0.
-  sensor = new five.Sensor({
+  sensorOne = new five.Sensor({
     pin: "A0",
     freq: 250,
   });
 
  // Create a new `sensor` hardware instance from analog pin A1
-  sensor = new five.Sensor({
+  sensorTwo = new five.Sensor({
     pin: "A1",
     freq: 250,
   });
@@ -73,13 +73,13 @@ board.on("ready", function() {
   //
   // Fires when the pin is read for a value
   //
-  sensor.on("data", function() {
-    console.log(this.value, this.raw);
+  sensorOne.on("data", function() {
+    console.log('sensor1=',this.value, this.raw);
     io.emit('beatOne',this.value);//sending message to client side-speaking from sensor on analog input A0
   });
 
-  sensor.on("data", function() {
-    console.log(this.value, this.raw);
+  sensorTwo.on("data", function() {
+    console.log('sensor2=',this.value, this.raw);
     io.emit('beatTwo',this.value);//sending message to client side-speaking from sensor on analog input A1
   });
 
