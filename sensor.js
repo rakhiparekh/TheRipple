@@ -37,13 +37,13 @@ board.on("ready", function() {
   // Create a new `sensor` hardware instance from analog pin A0.
   sensorOne = new five.Sensor({
     pin: "A0",
-    freq: 250,
+    freq: 200,
   });
 
  // Create a new `sensor` hardware instance from analog pin A1
   sensorTwo = new five.Sensor({
     pin: "A1",
-    freq: 250,
+    freq: 200,
   });
 
 
