@@ -86,7 +86,7 @@
                 var myInterval= setInterval(function() {
                     var t = (new Date()).getTime() / 1000;
                     exports.y = 2*scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate+300;//2 creates harmony.. do not change
-                    console.log(exports.y);
+                    // console.log(exports.y);
                 }, 100);
 
                 
@@ -138,7 +138,7 @@
     };
 
     var MouseOne = heartRate('beatOne',450);
-    var MouseTwo = heartRate('beatTwo',1450);
+    var MouseTwo = heartRate('beatTwo',850);
 
 
     var Stage = {
@@ -234,7 +234,7 @@
         function createWaves( height ) {
 
             waves = [];
-            var distance = 35;//works at 35
+            var distance = 15;//works at 35
 
             times( height / distance, function( index ) {
                 waves.push( new Wave( 0, index * distance + 10, context, rand( 0.18, 0.22 ) * index, Mouse ) );

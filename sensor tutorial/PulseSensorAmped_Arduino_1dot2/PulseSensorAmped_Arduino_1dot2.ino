@@ -30,6 +30,7 @@ This update fixes the firstBeat and secondBeat flag usage so that realistic BPM 
 
 //  VARIABLES
 int pulsePin = 0;                 // Pulse Sensor purple wire connected to analog pin 0
+int pulsePin1 = 1;                 // Pulse Sensor purple wire connected to analog pin 0
 int blinkPin = 13;                // pin to blink led at each beat
 int fadePin = 5;                  // pin to do fancy classy fading blink at each beat
 int fadeRate = 0;                 // used to fade LED on with PWM on fadePin
@@ -46,7 +47,8 @@ volatile boolean QS = false;        // becomes true when Arduoino finds a beat.
 void setup(){
   pinMode(blinkPin,OUTPUT);         // pin that will blink to your heartbeat!
   pinMode(fadePin,OUTPUT);          // pin that will fade to your heartbeat!
-  Serial.begin(115200);             // we agree to talk fast!
+  Serial.begin(115200); 
+  analogReference(EXTERNAL);  // we agree to talk fast!
   interruptSetup();                 // sets up to read Pulse Sensor signal every 2mS 
    // UN-COMMENT THE NEXT LINE IF YOU ARE POWERING The Pulse Sensor AT LOW VOLTAGE, 
    // AND APPLY THAT VOLTAGE TO THE A-REF PIN
@@ -56,9 +58,10 @@ void setup(){
 
 
 void loop(){
-  sendDataToProcessing('S', Signal);     // send Processing the raw Pulse Sensor data
+  //sendDataToProcessing('S', Signal);     // send Processing the raw Pulse Sensor data
   if (QS == true){                       // Quantified Self flag is true when arduino finds a heartbeat
         fadeRate = 255;                  // Set 'fadeRate' Variable to 255 to fade LED with pulse
+        BPM = map(BPM,40,100,5,10);
         sendDataToProcessing('B',BPM);   // send heart rate with a 'B' prefix
         sendDataToProcessing('Q',IBI);   // send time between beats with a 'Q' prefix
         QS = false;                      // reset the Quantified Self flag for next time    
@@ -66,7 +69,7 @@ void loop(){
   
   ledFadeToBeat();
   
-  delay(20);                             //  take a break
+  delay(10);                             //  take a break
 }
 
 

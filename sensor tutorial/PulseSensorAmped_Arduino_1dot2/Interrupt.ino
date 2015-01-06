@@ -22,6 +22,8 @@ void interruptSetup(){
 } 
 
 
+
+
 // THIS IS THE TIMER 2 INTERRUPT SERVICE ROUTINE. 
 // Timer 2 makes sure that we take a reading every 2 miliseconds
 ISR(TIMER2_COMPA_vect){                         // triggered when Timer2 counts to 124
@@ -102,6 +104,7 @@ ISR(TIMER2_COMPA_vect){                         // triggered when Timer2 counts 
 
   sei();                                   // enable interrupts when youre done!
 }// end isr
+
 
 
 

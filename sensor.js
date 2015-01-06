@@ -6,7 +6,7 @@ var io = require('socket.io')(http);
 app.get('/', function(req, res){	
   res.sendFile(__dirname + '/wave.html');
 
-});
+});`
 
 //making html connection to css
 app.get('/wave.css', function(req, res){	
