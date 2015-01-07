@@ -45,10 +45,14 @@ myPort.on('open', function() {
 myPort.on('data', function (data) {
 	// for debugging, you should see this in Terminal:
 	console.log(""+ data);
-	if (data.split("BOne")[0] === ""){
-		var bpm1= data.split("BOne")[1];
-		io.emit('beatOne',bpm);//sending message to client side-speaking from sensor on analog input A0
-	} else io.emit('beatOne',0);//sending message to client side-speaking from sensor on analog input A0
+	if (data.split("BZero")[0] === ""){
+		var bpmZero= data.split("BZero")[1];
+		io.emit('beatZero',bpmZero);//sending message to client side-speaking from sensor on analog input A0
+}else {
+	(data.split("BOne")[0] ==="")
+		var bpmOne=data.split("BOne")[1];
+		io.emit('beatOne',bpmOne);//sending message to client side-speaking from sensor on analog input A1
+	}
 });
 
 // called when the serial port closes:
