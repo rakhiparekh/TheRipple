@@ -24,7 +24,8 @@ ISR(TIMER2_COMPA_vect){
   cli(); 
   // triggered when Timer2 counts to 124
   for (int pulsePin = 0; pulsePin <1; pulsePin++){
-                                         // disable interrupts while we do this
+    
+                                                // disable interrupts while we do this
     Signal = analogRead(pulsePin);              // read the Pulse Sensor 
     sampleCounter += 2;                         // keep track of the time in mS with this variable
     int N = sampleCounter - lastBeatTime;       // monitor the time since the last beat to avoid noise
@@ -71,11 +72,18 @@ ISR(TIMER2_COMPA_vect){
           rate[i] = rate[i+1];                  // and drop the oldest IBI value 
           runningTotal += rate[i];              // add up the 9 oldest IBI values
         }
+        
+
   
         rate[9] = IBI;                          // add the latest IBI to the rate array
         runningTotal += rate[9];                // add the latest IBI to runningTotal
         runningTotal /= 10;                     // average the last 10 IBI values 
         BPM = 60000/runningTotal;               // how many beats can fit into a minute? that's BPM!
+         if((BPM>=50) && (BPM<=100)){
+        Serial.print("BZero");
+        Serial.println(BPM);   
+    
+        }                   // how many beats can fit into a minute? that's BPM!
         QS = true;                              // set Quantified Self flag 
         // QS FLAG IS NOT CLEARED INSIDE THIS ISR
       }                       
@@ -103,6 +111,7 @@ ISR(TIMER2_COMPA_vect){
   }   // enable interrupts when youre done!
  ///////////////////////////////////////////////////////////SECOND PIN////////////////////// 
   for (int pulsePin = 1; pulsePin >0; pulsePin--){
+    
     cli();                                      // disable interrupts while we do this
     Signal = analogRead(pulsePin);              // read the Pulse Sensor 
     sampleCounter += 2;                         // keep track of the time in mS with this variable
@@ -150,11 +159,18 @@ ISR(TIMER2_COMPA_vect){
           rate[i] = rate[i+1];                  // and drop the oldest IBI value 
           runningTotal += rate[i];              // add up the 9 oldest IBI values
         }
+        
+       
   
         rate[9] = IBI;                          // add the latest IBI to the rate array
         runningTotal += rate[9];                // add the latest IBI to runningTotal
         runningTotal /= 10;                     // average the last 10 IBI values 
-        BPM = 60000/runningTotal;               // how many beats can fit into a minute? that's BPM!
+        BPM = 60000/runningTotal;
+        if((BPM>=50) && (BPM<=100)){
+        Serial.print("BOne");
+        Serial.println(BPM);   
+    
+        }                   // how many beats can fit into a minute? that's BPM!
         QS = true;                              // set Quantified Self flag 
         // QS FLAG IS NOT CLEARED INSIDE THIS ISR
       }                       

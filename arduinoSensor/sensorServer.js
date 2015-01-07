@@ -14,16 +14,41 @@ var myPort = new SerialPort(portName, {
 	parser: serialport.parsers.readline("\r\n")
 });
 
+//listening for the connection event with the client line 20
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
+
+//
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});
+
+//request a file at the top level
+app.get('/', function(req, res){	
+  res.sendFile(__dirname + '/wave.html');
+
+});
+
+//making html connection to css
+app.get('/wave.css', function(req, res){	
+  res.sendFile(__dirname + '/wave.css');
+}); 
+
 // called when the serial port opens:
 myPort.on('open', function() {
 	console.log('port open');
 	console.log('baud rate: ' + myPort.options.baudRate);
+});
 
 	// called when there's new incoming serial data:
-	myPort.on('data', function (data) {
-		// for debugging, you should see this in Terminal:
-		console.log(""+ data);
-	});
+myPort.on('data', function (data) {
+	// for debugging, you should see this in Terminal:
+	console.log(""+ data);
+	if (data.split("BOne")[0] === ""){
+		var bpm1= data.split("BOne")[1];
+		io.emit('beatOne',bpm);//sending message to client side-speaking from sensor on analog input A0
+	} else io.emit('beatOne',0);//sending message to client side-speaking from sensor on analog input A0
 });
 
 // called when the serial port closes:
@@ -37,12 +62,6 @@ myPort.on('error', function(error) {
 	myPort.close();
 });
 
-sensorOne.on("data", function() {
-    console.log('sensor1=',this.value, this.raw);
-    io.emit('beatOne',this.value);//sending message to client side-speaking from sensor on analog input A0
-  });
 
-  sensorTwo.on("data", function() {
-    console.log('sensor2=',this.value, this.raw);
-    io.emit('beatTwo',this.value);//sending message to client side-speaking from sensor on analog input A1
-  });
+
+ 

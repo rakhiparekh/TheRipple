@@ -50,11 +50,7 @@ void setup(){
 void loop(){
   
   if (QS == true){                       // Quantified Self flag is true when arduino finds a heartbeat
-    if((BPM>=50) && (BPM<=100)){
-      
-    Serial.print("B");
-    Serial.println(BPM);
-    }
+    
     countdigits[2] = BPM % 10;
     //How to handle the middle digit depends on if the
     //the speed is a two or three digit number
