@@ -47,33 +47,33 @@
 
     function heartRate(myEvent, myX) {
 
-        var pulse_data = [],
+        // var pulse_data = [],
 
-        plot,
-        totalPoints = 100,
-        lastPeak = Date.now(),
-        peakDiffs = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        freq = 0;
-        // y_min = 20,
-        // y_max = 50;
+        // plot,
+        // totalPoints = 100,
+        // lastPeak = Date.now(),
+        // peakDiffs = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        // freq = 0;
+        // // y_min = 20,
+        // // y_max = 50;
 
-        while (pulse_data.length < totalPoints) {
-            pulse_data.push(0);
-        }
+        // while (pulse_data.length < totalPoints) {
+        //     pulse_data.push(0);
+        // }
 
-        var parse_data = function () {
-            var res = [],
-            min = max = pulse_data[0];
+        // var parse_data = function () {
+        //     var res = [],
+        //     min = max = pulse_data[0];
 
-            for (var i = 0; i < pulse_data.length; ++i) {
-                if (max < pulse_data[i]) { max = pulse_data[i]; }
-                if (min < pulse_data[i]) { min = pulse_data[i]; }
+        //     for (var i = 0; i < pulse_data.length; ++i) {
+        //         if (max < pulse_data[i]) { max = pulse_data[i]; }
+        //         if (min < pulse_data[i]) { min = pulse_data[i]; }
 
-                res.push([i, pulse_data[i] ])
-            }
+        //         res.push([i, pulse_data[i] ])
+        //     }
 
-            return res;
-        }
+        //     return res;
+        // }
 
         var exports = {
             x: myX,
@@ -82,10 +82,10 @@
 
                 
                 
-                var scaledHeartRate =0;
+                var scaledHeartRate=0;
                 var myInterval= setInterval(function() {
-                    var t = (new Date()).getTime() / 1000;
-                    exports.y = 2*scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate+300;//2 creates harmony.. do not change
+                    var t = (new Date()).getTime() / 2000;
+                    exports.y = 4*scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate+300;//2 creates harmony.. do not change
                     // console.log(exports.y);
                 }, 100);
 
@@ -93,40 +93,52 @@
 
                 
                 socket.on(myEvent, function (data) {
-                    pulse_data.push(data)
-                    pulse_data.shift();
+
+                    scaledHeartRate=data/10;
+                    console.log(myEvent);
+                    console.log(data);
+
+
+
+
+
+
+
+                    // pulse_data.push(data)
+
+                    // pulse_data.shift();
 
                     // plot.setData([ parse_data() ]);
                     // plot.draw();
 
-                    if (data < pulse_data[totalPoints - 2] - .2) {
-                        freq = Date.now() - lastPeak;
-                        lastPeak = Date.now();
+                    // if (data < pulse_data[totalPoints - 2] - .2) {
+                    //     freq = Date.now() - lastPeak;
+                    //     lastPeak = Date.now();
 
-                        peakDiffs.push(freq);
-                        peakDiffs.shift();
+                    //     peakDiffs.push(freq);
+                    //     peakDiffs.shift();
 
-                        var peak_sum = 0;
-                        for (var i = 0; i < peakDiffs.length; i++) {
-                            peak_sum += peakDiffs[i];
-                        }
+                    //     var peak_sum = 0;
+                    //     for (var i = 0; i < peakDiffs.length; i++) {
+                    //         peak_sum += peakDiffs[i];
+                    //     }
 
-                        heart_rate = parseInt(60 / ((peak_sum / peakDiffs.length) / 1000), 10);
+                    //     heart_rate = parseInt(60 / ((peak_sum / peakDiffs.length) / 1000), 10);
 
-                        console.log(myEvent,data);
+                    //     console.log(myEvent,data);
 
-                        // var upDown = Math.random();//random number generator
-                        // if (upDown >= 0.5){
-                            //     upDown=1;
-                            // }
-                        // else upDown=-1;
+                    //     // var upDown = Math.random();//random number generator
+                    //     // if (upDown >= 0.5){
+                    //         //     upDown=1;
+                    //         // }
+                    //     // else upDown=-1;
 
-                        scaledHeartRate= 0.5*(heart_rate);//scaling heart_rate variable
-                        // $('#heartrate').html(heart_rate);
+                    //     scaledHeartRate= 0.5*(heart_rate);//scaling heart_rate variable
+                    //     // $('#heartrate').html(heart_rate);
 
-                        console.log(scaledHeartRate);
+                    //     console.log(scaledHeartRate);
 
-                    }
+                    // }
 
                 });
                 
@@ -137,8 +149,8 @@
 
     };
 
-    var MouseOne = heartRate('beatOne',450);
-    var MouseTwo = heartRate('beatTwo',850);
+    var MouseOne = heartRate('beatZero',450);
+    var MouseTwo = heartRate('beatOne',850);
 
 
     var Stage = {
@@ -234,7 +246,7 @@
         function createWaves( height ) {
 
             waves = [];
-            var distance = 15;//works at 35
+            var distance = 35;//works at 35
 
             times( height / distance, function( index ) {
                 waves.push( new Wave( 0, index * distance + 10, context, rand( 0.18, 0.22 ) * index, Mouse ) );

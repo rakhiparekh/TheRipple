@@ -83,7 +83,7 @@ ISR(TIMER2_COMPA_vect){
         Serial.print("BZero");
         Serial.println(BPM);   
     
-        }                   // how many beats can fit into a minute? that's BPM!
+        }          // how many beats can fit into a minute? that's BPM!
         QS = true;                              // set Quantified Self flag 
         // QS FLAG IS NOT CLEARED INSIDE THIS ISR
       }                       
