@@ -15,7 +15,14 @@
 
 <script>
 
+    
     var socket = io(); //makes the connection to server side line 18 
+
+    
+    var xZero = 0; // stores the current x positon
+    var xOne = 0; // stores the current y position
+
+
 
     var canvas = document.getElementById( "canvas" );
     var size = {
@@ -35,122 +42,65 @@
 
     var options = {
         color: "#777",
-        waveAmplitude: 12,//rise of the base wave (5 is interesting, 12 works)
+        waveAmplitude: 10,//rise of the base wave (5 is interesting, 12 works)
         waveRadius: 220,//width/radius220 works
         waveElasticity: 0.99,//elasticity 1 takes too long to return back
         waveStrength: 0.011,//speed at 0.011 works
         waveMouse: 15,//not sure how this affects but 1
         waveMax: 150,//drop of the sesnor wave try 500 to see impact 150 works
         waveComeUp: function() {},
-        waveRiseSpeed: 5,// the speed at which the waves come up
+        waveRiseSpeed: 8,// the speed at which the waves come up
     };
 
     function heartRate(myEvent, myX) {
 
-        // var pulse_data = [],
-
-        // plot,
-        // totalPoints = 100,
-        // lastPeak = Date.now(),
-        // peakDiffs = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        // freq = 0;
-        // // y_min = 20,
-        // // y_max = 50;
-
-        // while (pulse_data.length < totalPoints) {
-        //     pulse_data.push(0);
-        // }
-
-        // var parse_data = function () {
-        //     var res = [],
-        //     min = max = pulse_data[0];
-
-        //     for (var i = 0; i < pulse_data.length; ++i) {
-        //         if (max < pulse_data[i]) { max = pulse_data[i]; }
-        //         if (min < pulse_data[i]) { min = pulse_data[i]; }
-
-        //         res.push([i, pulse_data[i] ])
-        //     }
-
-        //     return res;
-        // }
-
         var exports = {
-            x: myX,
+            x: myX, 
             y: 0,
             bind: function( canvas ) {
 
-                
-                
                 var scaledHeartRate=0;
                 var myInterval= setInterval(function() {
                     var t = (new Date()).getTime() / 2000;
-                    exports.y = 4*scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate+300;//2 creates harmony.. do not change
+                    
+                    exports.y = 6*scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate+300;//2 creates harmony.. do not change
                     // console.log(exports.y);
                 }, 100);
-
-                
-
-                
+             
                 socket.on(myEvent, function (data) {
 
-                    scaledHeartRate=data/10;
-                    console.log(myEvent);
-                    console.log(data);
+                scaledHeartRate=data/10; // this is scaled heartRate for myEvent coming 
 
+                console.log(myEvent);
+                console.log(data);
 
+///////////////// x position changes as the hear beats come closer////////////
 
+                if (myEvent == "beatOne"){
 
+                    var diff = Math.abs(scaledHeartRate-xZero);
+                    xOne = scaledHeartRate;
+                    exports.x = (myX-100)+(diff*10)+150;
 
+                } else if (myEvent== "beatZero"){
 
+                    var diff = Math.abs(scaledHeartRate-xOne);
+                    xZero = scaledHeartRate;
+                    exports.x = (myX+200)-(diff*10)-150;
 
-                    // pulse_data.push(data)
-
-                    // pulse_data.shift();
-
-                    // plot.setData([ parse_data() ]);
-                    // plot.draw();
-
-                    // if (data < pulse_data[totalPoints - 2] - .2) {
-                    //     freq = Date.now() - lastPeak;
-                    //     lastPeak = Date.now();
-
-                    //     peakDiffs.push(freq);
-                    //     peakDiffs.shift();
-
-                    //     var peak_sum = 0;
-                    //     for (var i = 0; i < peakDiffs.length; i++) {
-                    //         peak_sum += peakDiffs[i];
-                    //     }
-
-                    //     heart_rate = parseInt(60 / ((peak_sum / peakDiffs.length) / 1000), 10);
-
-                    //     console.log(myEvent,data);
-
-                    //     // var upDown = Math.random();//random number generator
-                    //     // if (upDown >= 0.5){
-                    //         //     upDown=1;
-                    //         // }
-                    //     // else upDown=-1;
-
-                    //     scaledHeartRate= 0.5*(heart_rate);//scaling heart_rate variable
-                    //     // $('#heartrate').html(heart_rate);
-
-                    //     console.log(scaledHeartRate);
-
-                    // }
+                    }
 
                 });
                 
             }
         };
 
-        return exports;
+        return exports;// returns the x and y position of the wave created
 
     };
 
-    var MouseOne = heartRate('beatZero',450);
-    var MouseTwo = heartRate('beatOne',850);
+    var MouseOne = heartRate('beatZero',200); // calls out to the heartRate function to create waveOne
+    var MouseTwo = heartRate('beatOne',850); /// calls out to the heartRate function to create waveTwo
 
 
     var Stage = {
@@ -246,7 +196,7 @@
         function createWaves( height ) {
 
             waves = [];
-            var distance = 35;//works at 35
+            var distance = 30;//works at 35
 
             times( height / distance, function( index ) {
                 waves.push( new Wave( 0, index * distance + 10, context, rand( 0.18, 0.22 ) * index, Mouse ) );

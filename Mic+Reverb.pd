@@ -1,0 +1,51 @@
+#N canvas 333 140 489 438 10;
+#X obj -53 352 freeverb~;
+#X msg 31 57 roomsize \$1;
+#X msg 30 118 damping \$1;
+#X msg 26 188 wet \$1;
+#X msg 25 209 dry \$1;
+#X msg 26 263 freeze \$1;
+#X msg 26 303 bypass \$1;
+#X obj -53 123 adc~;
+#X obj -53 388 dac~;
+#X obj 26 246 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 26 286 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 158 151 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -4032
+-1 -1 7300 1;
+#X floatatom 155 170 5 0 0 0 - - -;
+#X obj 86 192 expr 1-$f1;
+#X obj 156 36 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -4034
+-1 -1 7800 1;
+#X obj 158 93 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -260097
+-1 -1 7400 1;
+#X floatatom 155 113 5 0 0 0 - - -;
+#X floatatom 153 61 5 0 0 0 - - -;
+#X text 117 252 Freeze the reverb;
+#X text 117 312 the dry signal pass through.;
+#X text 116 299 Trun the reverb off and let;
+#X text 205 178 Wet signal to dry signal ratio;
+#X text 205 194 (0 : all dry \, 1 : all wet);
+#X text 206 113 Damping level;
+#X text 205 59 Roomize;
+#X obj -59 17 pddp/dsp;
+#X connect 0 0 8 0;
+#X connect 0 0 8 1;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 9 0 5 0;
+#X connect 10 0 6 0;
+#X connect 11 0 12 0;
+#X connect 11 0 3 0;
+#X connect 11 0 13 0;
+#X connect 13 0 4 0;
+#X connect 14 0 1 0;
+#X connect 14 0 17 0;
+#X connect 15 0 2 0;
+#X connect 15 0 16 0;

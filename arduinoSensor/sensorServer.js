@@ -7,6 +7,23 @@ var serialport = require("serialport"),	// include the serialport library
 	SerialPort  = serialport.SerialPort,	// make a local instance of it
 	portName = "/dev/tty.usbmodem1421";			// get the serial port name from the command line
 
+//write to json
+// var fs = require('fs')
+// var outputFilename = '../sensorData/sensorData.json';
+// var sensorData = {
+// 	sensor0 : '',
+// 	sensor1 : '',
+// }
+// fs.writeFile(outputFilename, JSON.stringify(sensor0, sensor1), function(err) {
+//     if(err) {
+//       console.log(err);
+//     } else {
+//       console.log("JSON saved to " + outputFilename);
+//     }
+// }); 
+
+
+
 // open the serial port. The portname comes from the command line:
 var myPort = new SerialPort(portName, {
 	baudRate: 115200,
