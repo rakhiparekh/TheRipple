@@ -49,78 +49,79 @@ void setup(){
 
 void loop(){
   
-  if (QS == true){                       // Quantified Self flag is true when arduino finds a heartbeat
-    if((BPM>=50) && (BPM<=100)){
+  if (QS == true) {      // Quantified Self flag is true when arduino finds a heartbeat
       
-    Serial.print("BZero");
-    Serial.println(BPM);   
-    }
-    else{
-    Serial.print("BZero");
-    Serial.println(0); 
-    }
-    
-    countdigits[2] = BPM % 10;
-    //How to handle the middle digit depends on if the
-    //the speed is a two or three digit number
-    if(BPM > 99){
-      countdigits[1] = (BPM / 10) % 10;
-    }
-    else{
-      countdigits[1] = BPM / 10;
-    }
-    //Grab the first digit
-    countdigits[0] = BPM / 100;
-
-    //Split out the digits of the previous speed
-    prevdigits[2] = prevCount % 10;
-    if(prevCount > 99){
-      prevdigits[1] = (prevCount / 10) % 10;
-    }
-    else{
-      prevdigits[1] = prevCount / 10;
-    }
-    prevdigits[0] = prevCount / 100;
-    //Now print the digits on the TFT screen.
-    //Only execute this block if the bpm has changed.
-    if(BPM != prevCount){
-      //tft.setTextSize(10);
-      //Compare each digit to the value from the previous loop.
-      //The digit will only be redrawn if it has changed.
-      for(x=0; x < 3; x++){
-        if(countdigits[x] != prevdigits[x]){
-          //black out old value first.
-          //Draw digit in black over the top of white digit
-          //tft.setCursor(digitpos[x], 70);
-          //tft.setTextColor(ILI9340_BLACK);
-          Serial.println(prevdigits[x]);
-          //print new value in white
-          if((x == 0) and (BPM > 99) and (countdigits[x] > 0)){
-            //tft.setCursor(digitpos[x], 70);
-            //tft.setTextColor(ILI9340_WHITE);
-            Serial.println(countdigits[x]);
-          }
-          if((x == 1) and (BPM >= 99)){
-            //tft.setCursor(digitpos[x], 70);
-            //tft.setTextColor(ILI9340_WHITE);
-            Serial.println(countdigits[x]);
-          }
-          else if((x == 1) and (BPM < 99) and (countdigits[x] > 0)){
-            //tft.setCursor(digitpos[x], 70);
-            //tft.setTextColor(ILI9340_WHITE);
-            Serial.println(countdigits[x]);
-          }
-          if(x == 2){
-            //tft.setCursor(digitpos[x], 70);
-            //tft.setTextColor(ILI9340_WHITE);
-            Serial.println(countdigits[x]);
-          }
-        }
+      if((BPM>=50) && (BPM<=100)){
+      
+          Serial.print("BZero");
+          Serial.println(BPM);   
       }
-      prevCount = BPM; //Store current bpm for comparison on the next loop.
-    } 
-    QS = false;  // reset the Quantified Self flag for next time    
-  }
+      else{
+          Serial.print("BZero");
+          Serial.println(0); 
+      }
+
+      countdigits[2] = BPM % 10;
+      //How to handle the middle digit depends on if the
+      //the speed is a two or three digit number
+      if(BPM > 99){
+          countdigits[1] = (BPM / 10) % 10;
+      }
+      else{
+          countdigits[1] = BPM / 10;
+      }
+      //Grab the first digit
+      countdigits[0] = BPM / 100;
+
+      //Split out the digits of the previous speed
+      prevdigits[2] = prevCount % 10;
+      if(prevCount > 99){
+          prevdigits[1] = (prevCount / 10) % 10;
+      }
+      else{
+          prevdigits[1] = prevCount / 10;
+      }
+      prevdigits[0] = prevCount / 100;
+      //Now print the digits on the TFT screen.
+      //Only execute this block if the bpm has changed.
+      if(BPM != prevCount){
+          //tft.setTextSize(10);
+          //Compare each digit to the value from the previous loop.
+          //The digit will only be redrawn if it has changed.
+          for(x=0; x < 3; x++){
+              if(countdigits[x] != prevdigits[x]){
+                  //black out old value first.
+                  //Draw digit in black over the top of white digit
+                  //tft.setCursor(digitpos[x], 70);
+                  //tft.setTextColor(ILI9340_BLACK);
+//                  Serial.println(prevdigits[x]);
+                  //print new value in white
+                  if((x == 0) and (BPM > 99) and (countdigits[x] > 0)){
+                      //tft.setCursor(digitpos[x], 70);
+                      //tft.setTextColor(ILI9340_WHITE);
+//                      Serial.println(countdigits[x]);
+                  }
+                  if((x == 1) and (BPM >= 99)){
+                      //tft.setCursor(digitpos[x], 70);
+                      //tft.setTextColor(ILI9340_WHITE);
+//                      Serial.println(countdigits[x]);
+                  }
+                  else if((x == 1) and (BPM < 99) and (countdigits[x] > 0)){
+                      //tft.setCursor(digitpos[x], 70);
+                      //tft.setTextColor(ILI9340_WHITE);
+//                      Serial.println(countdigits[x]);
+                  }
+                 if(x == 2){
+                    //tft.setCursor(digitpos[x], 70);
+                    //tft.setTextColor(ILI9340_WHITE);
+//                    Serial.println(countdigits[x]);
+                 }
+             }
+          }
+          prevCount = BPM; //Store current bpm for comparison on the next loop.
+      } 
+      QS = false;  // reset the Quantified Self flag for next time    
+   }
 }
 
 
