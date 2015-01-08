@@ -68,32 +68,18 @@ myPort.on('open', function() {
 	console.log('baud rate: ' + myPort.options.baudRate);
 });
 
-myPort1.on('open', function() {
-	console.log('port open');
-	console.log('baud rate: ' + myPort1.options.baudRate);
-});
+
 	// called when there's new incoming serial data:
 myPort.on('data', function (data) {
 	// for debugging, you should see this in Terminal:
-	console.log(""+ data);
+	console.log("\n myPort.on data");
+	console.log("raw data: "+ data);
+	console.log("split by BZero: ", data.split("BZero"));
 	if (data.split("BZero")[0] === ""){
 		var bpmZero= data.split("BZero")[1];
 		io.emit('beatZero',bpmZero);//sending message to client side-speaking from sensor on analog input A0
-		
 		console.log(bpmZero+"bpmZero");
-}
-
-// 	if (data.split("BZero")[0] === ""){
-// 		var bpmZero= data.split("BZero")[1];
-// 		io.emit('beatZero',bpmZero);//sending message to client side-speaking from sensor on analog input A0
-		
-// 		console.log(bpmZero+"bpmZero");
-// }else if
-// 	(data.split("BOne")[0] ===""){
-// 		var bpmOne=data.split("BOne")[1];
-// 		io.emit('beatOne',bpmOne);//sending message to client side-speaking from sensor on analog input A1
-// 		console.log(bpmOne+"bpmOne");
-// 	}
+	}
 });
 
 // called when the serial port closes:
@@ -107,11 +93,18 @@ myPort.on('error', function(error) {
 	myPort.close();
 });
 
+myPort1.on('open', function() {
+	console.log('port open');
+	console.log('baud rate: ' + myPort1.options.baudRate);
+});
+
 myPort1.on('data', function (data1) {
 	// for debugging, you should see this in Terminal:
-	console.log(""+ data1);
-    if
-	(data1.split("BOne")[0] ===""){
+	console.log("\n myPort1.on data");
+	console.log("raw data: "+ data1);
+	console.log("split by BOne: ", data1.split("BOne"));
+
+    if (data1.split("BOne")[0] ===""){
 		var bpmOne=data1.split("BOne")[1];
 		io.emit('beatOne',bpmOne);//sending message to client side-speaking from sensor on analog input A1
 		console.log(bpmOne+"bpmOne");
