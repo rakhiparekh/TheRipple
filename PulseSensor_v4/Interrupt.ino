@@ -79,7 +79,11 @@ ISR(TIMER2_COMPA_vect){
         runningTotal += rate[9];                // add the latest IBI to runningTotal
         runningTotal /= 10;                     // average the last 10 IBI values 
         BPM = 60000/runningTotal;               // how many beats can fit into a minute? that's BPM!
-         if((BPM>=50) && (BPM<=80)){
+         
+        // how many beats can fit into a minute? that's BPM!
+        QS = true;                              // set Quantified Self flag 
+        
+        if((BPM>=40) && (BPM<=95)){
         Serial.print("BZero");
         Serial.println(BPM);   
     
@@ -89,8 +93,6 @@ ISR(TIMER2_COMPA_vect){
           
           
         } 
-        // how many beats can fit into a minute? that's BPM!
-        QS = true;                              // set Quantified Self flag 
         // QS FLAG IS NOT CLEARED INSIDE THIS ISR
       }                       
     }
@@ -172,17 +174,19 @@ ISR(TIMER2_COMPA_vect){
         runningTotal += rate[9];                // add the latest IBI to runningTotal
         runningTotal /= 10;                     // average the last 10 IBI values 
         BPM = 60000/runningTotal;
-        if((BPM>=50) && (BPM<=80)){
+        
+        QS = true;           // set Quantified Self flag
+        
+       if((BPM>=40) && (BPM<=95)){
         Serial.print("BOne");
         Serial.println(BPM);   
     
         } else{
-          Serial.print("BZero");
+          Serial.print("BOne");
           Serial.println(0);  
           
           
-        }                   // how many beats can fit into a minute? that's BPM!
-        QS = true;                              // set Quantified Self flag 
+        }                   // how many beats can fit into a minute? that's BPM! 
         // QS FLAG IS NOT CLEARED INSIDE THIS ISR
       }                       
     }

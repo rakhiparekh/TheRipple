@@ -42,7 +42,7 @@
 
     var options = {
         color: "#777",
-        waveAmplitude: 10,//rise of the base wave (5 is interesting, 12 works)
+        waveAmplitude: 12,//rise of the base wave (5 is interesting, 12 works)
         waveRadius: 220,//width/radius220 works
         waveElasticity: 0.99,//elasticity 1 takes too long to return back
         waveStrength: 0.011,//speed at 0.011 works
@@ -61,34 +61,34 @@
 
                 var scaledHeartRate=0;
                 var myInterval= setInterval(function() {
-                    var t = (new Date()).getTime() / 2000;
+                    var t = (new Date()).getTime() / 3000;
                     
-                    exports.y = 6*scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate+300;//2 creates harmony.. do not change
+                    exports.y = 10*scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate+300;//2 creates harmony.. do not change
                     // console.log(exports.y);
                 }, 100);
              
                 socket.on(myEvent, function (data) {
 
-                scaledHeartRate=data/10; // this is scaled heartRate for myEvent coming 
+                    scaledHeartRate=data/10; // this is scaled heartRate for myEvent coming 
 
-                console.log(myEvent);
-                console.log(data);
+                    console.log(myEvent);
+                    console.log(data);
 
-///////////////// x position changes as the hear beats come closer////////////
+    ///////////////// x position changes as the hear beats come closer////////////
 
-                if (myEvent == "beatOne"){
+                    // if (myEvent == "beatOne"){
 
-                    var diff = Math.abs(scaledHeartRate-xZero);
-                    xOne = scaledHeartRate;
-                    exports.x = (myX-100)+(diff*10)+150;
+                    //     var diff = Math.abs(scaledHeartRate-xZero);
+                    //     xOne = scaledHeartRate;
+                    //     exports.x = (myX-100)+(diff*10)+150;
 
-                } else if (myEvent== "beatZero"){
+                    // } else if (myEvent== "beatZero"){
 
-                    var diff = Math.abs(scaledHeartRate-xOne);
-                    xZero = scaledHeartRate;
-                    exports.x = (myX+200)-(diff*10)-150;
+                    //     var diff = Math.abs(scaledHeartRate-xOne);
+                    //     xZero = scaledHeartRate;
+                    //     exports.x = (myX+200)-(diff*10)-150;
 
-                    }
+                    //     }
 
                 });
                 
