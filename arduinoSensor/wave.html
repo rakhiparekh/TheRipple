@@ -65,7 +65,7 @@
                     
                     exports.y = 2*scaledHeartRate*Math.sin(2 * Math.PI * t) + scaledHeartRate+300;//2 creates harmony.. do not change
                     // console.log(exports.y);
-                }, 100);
+                }, 50);
              
                 socket.on(myEvent, function (data) {
 
@@ -104,8 +104,8 @@
 
     };
 
-    var MouseOne = heartRate('beatZero',200); // calls out to the heartRate function to create waveOne
-    var MouseTwo = heartRate('beatOne',850); /// calls out to the heartRate function to create waveTwo
+    var MouseOne = heartRate('beatZero',250); // calls out to the heartRate function to create waveOne
+    var MouseTwo = heartRate('beatOne',650); /// calls out to the heartRate function to create waveTwo
 
 
     var Stage = {
